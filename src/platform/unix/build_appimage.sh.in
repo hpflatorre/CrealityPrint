@@ -39,11 +39,13 @@ cp resources/images/@SLIC3R_APP_NAME@_192px.png usr/share/icons/hicolor/192x192/
 cat <<EOF > @SLIC3R_APP_NAME@.desktop
 [Desktop Entry]
 Name=@SLIC3R_APP_NAME@
+GenericName=3D Printing Software
 Exec=AppRun %F
 Icon=@SLIC3R_APP_NAME@
 Type=Application
-Categories=Utility;
-MimeType=model/stl;application/vnd.ms-3mfdocument;application/prs.wavefront-obj;application/x-amf;
+Categories=Graphics;Utility;3DGraphics;Engineering;
+MimeType=model/stl;model/3mf;application/vnd.ms-3mfdocument;application/prs.wavefront-obj;application/x-amf;
+StartupWMClass=@SLIC3R_APP_NAME@
 EOF
 
 

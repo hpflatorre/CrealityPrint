@@ -375,6 +375,10 @@
         {
             "name": "Creality CR-10 0.4 nozzle",
             "sub_path": "machine/Creality CR-10 0.4 nozzle.json"
+        },
+        {
+            "name": "Creality CR-200B 0.4 nozzle",
+            "sub_path": "machine/Creality CR-200B 0.4 nozzle.json"
         }
     ],
     "machine_model_list": [
@@ -597,6 +601,10 @@
         {
             "name": "Creality CR-10",
             "sub_path": "machine/Creality CR-10.json"
+        },
+        {
+            "name": "Creality CR-200B",
+            "sub_path": "machine/Creality CR-200B.json"
         }
     ],
     "filament_list": [
@@ -6359,6 +6367,18 @@
         {
             "name": "Generic ABS @Creality CR-10 0.4 nozzle",
             "sub_path": "filament/Generic ABS @Creality CR-10 0.4 nozzle.json"
+        },
+        {
+            "name": "Generic PLA @Creality CR-200B 0.4 nozzle",
+            "sub_path": "filament/Generic PLA @Creality CR-200B 0.4 nozzle.json"
+        },
+        {
+            "name": "Generic ABS @Creality CR-200B 0.4 nozzle",
+            "sub_path": "filament/Generic ABS @Creality CR-200B 0.4 nozzle.json"
+        },
+        {
+            "name": "Generic PETG @Creality CR-200B 0.4 nozzle",
+            "sub_path": "filament/Generic PETG @Creality CR-200B 0.4 nozzle.json"
         }
     ],
     "process_list": [
@@ -7509,6 +7529,18 @@
         {
             "name": "0.20mm Standard @Creality CR-10 0.4 nozzle",
             "sub_path": "process/0.20mm Standard @Creality CR-10 0.4 nozzle.json"
+        },
+        {
+            "name": "0.08mm Extra Fine @Creality CR-200B 0.4 nozzle",
+            "sub_path": "process/0.08mm Extra Fine @Creality CR-200B 0.4 nozzle.json"
+        },
+        {
+            "name": "0.16mm Optimal @Creality CR-200B 0.4 nozzle",
+            "sub_path": "process/0.16mm Optimal @Creality CR-200B 0.4 nozzle.json"
+        },
+        {
+            "name": "0.20mm Standard @Creality CR-200B 0.4 nozzle",
+            "sub_path": "process/0.20mm Standard @Creality CR-200B 0.4 nozzle.json"
         }
     ]
 }
