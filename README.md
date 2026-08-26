@@ -79,7 +79,7 @@ Visit our GitHub Releases page for the latest stable version of Creality Print, 
  1. If you run into trouble to execute it, try this command in terminal:  
     `chmod +x /path_to_appimage/CrealityPrint_Linux.AppImage`
  2. Popups missing on Wayland, or a crash on launch with a GLX `BadValue` error on
-    hybrid Intel/AMD + NVIDIA laptops: see [doc/Linux-Troubleshooting.md](doc/Linux-Troubleshooting.md).
+    hybrid Intel/AMD + NVIDIA laptops, or a GPU hang right after slicing on Intel iGPUs: see [doc/Linux-Troubleshooting.md](doc/Linux-Troubleshooting.md).
 
 **Creality CR-200B**: this fork ships profiles for the CR-200B, which upstream
 dropped after 4.3.8. See [scripts/cr200b/README.md](scripts/cr200b/README.md).

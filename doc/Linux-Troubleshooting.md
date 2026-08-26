@@ -49,6 +49,34 @@ and the variable is unset. Desktops whose primary GPU is NVIDIA are untouched,
 and PRIME render-offload users who set `__GLX_VENDOR_LIBRARY_NAME=nvidia`
 themselves keep their setting.
 
+## GPU hang / black "Not Responding" window right after slicing (Intel iGPU, Mesa 26.0.x)
+
+**Symptom:** slicing finishes, then 7–8 s later the window goes black and the
+title shows "(Not Responding)". The process stays alive. `journalctl -k` shows
+
+```
+i915 0000:00:02.0: [drm] CrealityPrint[<pid>] context reset due to GPU hang
+```
+
+and a core backtrace of the main thread ends in
+`GLCanvas3D::reload_scene → glXMakeCurrent → driUnbindContext → iris`.
+Reproduced on a Raptor Lake-U iGPU (8086:a7ac) with Mesa 26.0.8 on every
+slice, even a single 950-triangle object.
+
+**Cause:** the first draw of the G-code toolpath preview never completes on
+the Intel driver when colour-compression (CCS) surfaces are in use; i915's
+hang-checker then resets the context and iris deadlocks on the way out.
+
+**Workaround:** disable CCS for the app — `INTEL_DEBUG=noccs`. Verified with
+a scripted repro: `noccs` alone prevents the hang with GPU acceleration kept;
+`nohiz`, `LIBGL_DRI3_DISABLE=1`, the GL 2.1 shader path and
+`gcode_preview_lite_mode` do not help. `LIBGL_ALWAYS_SOFTWARE=1` (llvmpipe)
+also works, at the cost of CPU rendering.
+
+```
+Exec=env GDK_BACKEND=x11 __GLX_VENDOR_LIBRARY_NAME=mesa INTEL_DEBUG=noccs /path/to/CrealityPrint.AppImage %F
+```
+
 ## Cosmetic noise you can ignore
 
 - `Gtk-CRITICAL ... gtk_widget_set_size_request: assertion 'width >= -1' failed`
