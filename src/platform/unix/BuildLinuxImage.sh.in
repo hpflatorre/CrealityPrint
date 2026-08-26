@@ -70,6 +70,21 @@ if [ -z "\${__GLX_VENDOR_LIBRARY_NAME}" ] && [ "\$have_nvidia_glx" = "1" ]; then
     done
 fi
 
+# 4) Intel iGPUs (seen on Raptor Lake-U with Mesa 26.0.8): the first draw of
+#    the G-code toolpath preview never completes when Mesa uses colour-
+#    compressed (CCS) surfaces; i915 resets the context ("context reset due
+#    to GPU hang") and iris deadlocks, leaving a black "Not Responding"
+#    window after every slice. Disabling CCS for this process avoids it at a
+#    small bandwidth cost. Honour a user-provided INTEL_DEBUG.
+if [ -z "\${INTEL_DEBUG+x}" ]; then
+    for dev in /sys/class/drm/card*/device; do
+        if [ "\$(cat "\$dev/vendor" 2>/dev/null)" = "0x8086" ]; then
+            export INTEL_DEBUG=noccs
+            break
+        fi
+    done
+fi
+
 exec "\$DIR/bin/@SLIC3R_APP_CMD@" "\$@"
 EOF
 

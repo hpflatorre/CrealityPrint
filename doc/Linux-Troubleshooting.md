@@ -67,7 +67,10 @@ slice, even a single 950-triangle object.
 the Intel driver when colour-compression (CCS) surfaces are in use; i915's
 hang-checker then resets the context and iris deadlocks on the way out.
 
-**Workaround:** disable CCS for the app — `INTEL_DEBUG=noccs`. Verified with
+**Workaround:** disable CCS for the app — `INTEL_DEBUG=noccs`. The launcher
+sets this automatically when an Intel GPU (vendor `0x8086`) is present and
+`INTEL_DEBUG` is unset (set `INTEL_DEBUG=` to an empty value to opt out).
+Verified with
 a scripted repro: `noccs` alone prevents the hang with GPU acceleration kept;
 `nohiz`, `LIBGL_DRI3_DISABLE=1`, the GL 2.1 shader path and
 `gcode_preview_lite_mode` do not help. `LIBGL_ALWAYS_SOFTWARE=1` (llvmpipe)
