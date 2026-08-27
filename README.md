@@ -1,3 +1,30 @@
+> ## This fork: Creality Print for Kubuntu / Linux
+>
+> Upstream Creality Print on Linux has several long-standing issues that the
+> maintainers have not merged fixes for (no community PR touching the Linux
+> platform layer has ever been merged). This fork keeps the fixes in one place
+> and ships a ready-to-run AppImage:
+>
+> | Problem on stock builds | Fix in this fork |
+> |---|---|
+> | Sidebar filament popup never appears on Wayland (KDE Plasma, GNOME) | launcher runs the app through XWayland |
+> | Crash on launch with `BadValue … (GLX)` on hybrid Intel/AMD + NVIDIA laptops | launcher selects the Mesa GLX vendor when the primary GPU is not NVIDIA |
+> | Black "Not Responding" window after **every slice** on Intel iGPUs (`i915: context reset due to GPU hang`) | launcher disables Intel colour compression (`INTEL_DEBUG=noccs`) |
+> | Creality CR-200B missing since 4.3.8 (upstream: "no plan to port", [#424](https://github.com/CrealityOfficial/CrealityPrint/issues/424)) | machine, process and filament profiles included |
+>
+> **Install / upgrade** (Ubuntu, Kubuntu, Mint… — needs `fuse3`):
+>
+> ```bash
+> curl -fsSL https://raw.githubusercontent.com/hpflatorre/CrealityPrint/cr200b-kubuntu/scripts/repack/install.sh | bash
+> ```
+>
+> or grab the AppImage from [Releases](https://github.com/hpflatorre/CrealityPrint/releases/latest).
+> Every workaround is overridable by setting the corresponding environment
+> variable yourself — details in [doc/Linux-Troubleshooting.md](doc/Linux-Troubleshooting.md).
+> Releases are produced by `scripts/repack/repack-appimage.sh` from Creality's
+> stock AppImage (no recompilation), so they track upstream versions closely.
+> Bugs with the Linux build or the CR-200B profiles: open an issue **here**, not upstream.
+
 # Creality Print 6.0  
 Creality Print 6.0 is an open source slicer for FDM printers.   [Offical Wiki](https://wiki.creality.com/en/software) 
 

@@ -1,0 +1,45 @@
+name: Repack Kubuntu AppImage
+# Builds this fork's AppImage from Creality's stock release without compiling
+# (see scripts/repack/repack-appimage.sh) and attaches it to a GitHub Release.
+on:
+  workflow_dispatch:
+    inputs:
+      upstream_tag:
+        description: "Upstream release tag to repack (e.g. v7.2.1)"
+        required: true
+      release_tag:
+        description: "Tag for this fork's release (e.g. v7.2.1-kubuntu.1)"
+        required: true
+jobs:
+  repack:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install tools
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq squashfs-tools fuse3 libfuse2t64 >/dev/null
+      - name: Download stock AppImage
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: |
+          gh release download "${{ inputs.upstream_tag }}" -R CrealityOfficial/CrealityPrint \
+             -p 'CrealityPrint-V*-x86_64-Release.AppImage' -D stock
+          ls -la stock
+      - name: Repack
+        run: |
+          STOCK=$(ls stock/*.AppImage); chmod +x "$STOCK"
+          OUT="$(basename "${STOCK%.AppImage}")-kubuntu.AppImage"
+          scripts/repack/repack-appimage.sh "$STOCK" "$PWD/$OUT"
+          echo "OUT=$OUT" >> "$GITHUB_ENV"
+      - name: Smoke test (AppRun renders, profiles present)
+        run: |
+          ./"$OUT" --appimage-extract AppRun >/dev/null && grep -q INTEL_DEBUG squashfs-root/AppRun
+          ./"$OUT" --appimage-extract 'resources/profiles/Creality/machine/Creality CR-200B*' >/dev/null
+          ls "squashfs-root/resources/profiles/Creality/machine/"
+      - name: Release
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: |
+          gh release create "${{ inputs.release_tag }}" "$OUT" "$OUT.sha256" \
+            --title "Creality Print ${{ inputs.upstream_tag }} — Kubuntu build" \
+            --notes "Repacked from upstream ${{ inputs.upstream_tag }} with this fork's Linux launcher fixes and CR-200B profiles. See README for details. Install: curl -fsSL https://raw.githubusercontent.com/${{ github.repository }}/cr200b-kubuntu/scripts/repack/install.sh | bash" \
+            --target "${{ github.sha }}"
