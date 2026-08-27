@@ -54,5 +54,5 @@ command -v update-desktop-database >/dev/null && update-desktop-database "$HOME/
 command -v kbuildsycoca6 >/dev/null && kbuildsycoca6 --noincremental >/dev/null 2>&1 || true
 
 # remove older versions of this fork's AppImage
-find "$INSTALL_DIR" -maxdepth 1 -name 'CrealityPrint-V*-kubuntu.AppImage' ! -name "$FILE" -delete 2>/dev/null || true
+find "$INSTALL_DIR" -maxdepth 1 \( -name 'CrealityPrint-V*-kubuntu.AppImage' -o -name 'CrealityPrint-V*-kubuntu.AppImage.sha256' \) ! -name "$FILE" -delete 2>/dev/null || true
 echo "==> installed $TAG to $INSTALL_DIR/$FILE (menu: CrealityPrint)"
